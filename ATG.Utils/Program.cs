@@ -9,7 +9,7 @@ Console.WriteLine(
 var authString = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes("pvserver:pvwr"));
 var client = new HttpClient();
 client.DefaultRequestHeaders.Add("Authorization", "Basic " + authString);
-client.Timeout = TimeSpan.FromSeconds(5);
+client.Timeout = TimeSpan.FromSeconds(10);
 
 Console.WriteLine(
     $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}Client constructed, fetching results now"
