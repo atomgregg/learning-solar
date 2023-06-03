@@ -16,6 +16,7 @@ FROM build AS publish
 RUN dotnet publish "ATG.Collector.Host.csproj" -c Release -o /app/publish
 
 FROM base AS final
+LABEL maintainer="Aaron Gregg <atomgregg@outlook.com>"
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ATG.Collector.Host.dll"]

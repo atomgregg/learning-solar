@@ -7,7 +7,7 @@ using HtmlAgilityPack;
 
 namespace ATG.Collector.Source.Solar
 {
-    public class KostalSource
+    public class KostalSource : ISolarSource
     {
         private const string PROGRAM_NAME = "ATG.Collector.Source.Solar.KostalSource";
         private const string TABSYMBOL = "\t";
@@ -36,7 +36,7 @@ namespace ATG.Collector.Source.Solar
             );
         }
 
-        public async Task<CollectResult?> CollectAsync()
+        public async Task<CollectResult> CollectAsync()
         {
             Console.WriteLine(
                 $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}Start"
@@ -56,10 +56,11 @@ namespace ATG.Collector.Source.Solar
             );
 
             // download and parse the webpage
-            string httpResponse = "";
+            HttpResponseMessage response;
             try
             {
-                httpResponse = await _client.GetAsync("/").Result.Content.ReadAsStringAsync();
+                response = await _client.GetAsync("/");
+                response.EnsureSuccessStatusCode();
             }
             catch (System.AggregateException ex)
             {
@@ -69,13 +70,19 @@ namespace ATG.Collector.Source.Solar
                 Console.WriteLine("----------");
                 Console.WriteLine(ex.Flatten().InnerException);
                 Console.WriteLine("----------");
-                return null;
+
+                return CollectResult.NewWithSingleError(
+                    CollectErrors.EXCEPTION_THROWN,
+                    ex.Flatten().InnerException.ToString()
+                );
             }
+
             Console.WriteLine(
                 $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}HTML response received"
             );
 
-            var results = ParsePowerGeneration(httpResponse, invokeTstamp);
+            var html = await response.Content.ReadAsStringAsync();
+            var results = ParsePowerGeneration(html, invokeTstamp);
             Console.WriteLine(
                 $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}HTML response parsed"
             );

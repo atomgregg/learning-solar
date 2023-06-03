@@ -11,4 +11,8 @@
     <ProjectReference Include="..\ATG.Collector.Source\ATG.Collector.Source.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+  </ItemGroup>
+
 </Project>
