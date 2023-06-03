@@ -6,6 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Version>0.0.1.1</Version>
+    <Authors>Aaron Gregg; atomgregg@outlook.com</Authors>
+    <Company></Company>
+    <Product>Data Collector and Storage</Product>
+    <AssemblyVersion>0.0.1.1</AssemblyVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>A program used to collect data from various home devices such as a solar inverter, and store the data in different stores such as a PostgreSQL database or a message queue</Description>
+    <Copyright>Copyright (c) Aaron Gregg</Copyright>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\ATG.Collector.Types\ATG.Collector.Types.csproj" />
     <ProjectReference Include="..\ATG.Collector.Source\ATG.Collector.Source.csproj" />
