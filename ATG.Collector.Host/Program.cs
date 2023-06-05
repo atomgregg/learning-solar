@@ -73,22 +73,39 @@ namespace ATG.Collector.Host
                 .ParseArguments<Options>(args)
                 .WithParsed<Options>(async o =>
                 {
-                    // validate the arguments provided
-                    if (!IsValid(o))
-                        return;
+                    try
+                    {
+                        // validate the arguments provided
+                        if (!IsValid(o))
+                            return;
 
-                    // create a collector for the given arguments
-                    ISolarSource collector = ResolveCollector(o);
+                        // create a collector for the given arguments
+                        ISolarSource collector = ResolveCollector(o);
 
-                    // do the collection and print to console
-                    var results = await collector.CollectAsync();
-                    Console.WriteLine(results?.ToJsonString());
+                        // do the collection and print to console
+                        var collectResult = await collector.CollectAsync();
+                        Console.WriteLine("===== Inverter Data =====");
+                        Console.WriteLine(collectResult?.ToJsonString());
+                        Console.WriteLine();
+                        Console.WriteLine();
 
-                    // write to the postgresql store
-                    var store = ResolveStore(o);
-                    await store.OpenConnectionAsync();
-                    await store.StoreAsync(results);
-                    await store.CloseConnectionAsync();
+                        // write to the postgresql store
+                        IGeneralStore store = ResolveStore(o);
+                        store.OpenConnection();
+                        var storeResult = store.Store(collectResult);
+                        store.CloseConnection();
+                        Console.WriteLine("===== Store Results =====");
+                        Console.WriteLine(storeResult?.ToJsonString());
+                        Console.WriteLine();
+                        Console.WriteLine();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Console.WriteLine("---------- ERROR ----------");
+                        Console.WriteLine(ex.ToString());
+                        Console.WriteLine("---------- ERROR ----------");
+                        throw;
+                    }
                 });
         }
 

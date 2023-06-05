@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace ATG.Collector.Types
 {
@@ -36,6 +37,11 @@ namespace ATG.Collector.Types
                 sb.AppendLine(error.ToString());
             }
             return sb.ToString();
+        }
+
+        public string ToJsonString()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 

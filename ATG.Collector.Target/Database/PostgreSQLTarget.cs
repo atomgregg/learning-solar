@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using System.Threading.Tasks;
 using ATG.Collector.Types;
 using ATG.Collector.Types.Collect;
@@ -21,19 +22,19 @@ namespace ATG.Collector.Target.Database
             _connection = new NpgsqlConnection(_connectionString);
         }
 
-        public async Task OpenConnectionAsync()
+        public void OpenConnection()
         {
             if (_connection.State != System.Data.ConnectionState.Open)
-                await _connection.OpenAsync();
+                _connection.Open();
         }
 
-        public async Task CloseConnectionAsync()
+        public void CloseConnection()
         {
             if (_connection.State != System.Data.ConnectionState.Closed)
-                await _connection.CloseAsync();
+                _connection.Close();
         }
 
-        public async Task<StoreResult> StoreAsync(CollectResult data)
+        public StoreResult Store(CollectResult data)
         {
             // create the result instance we will return
             var result = new StoreResult();
@@ -43,7 +44,7 @@ namespace ATG.Collector.Target.Database
             // open a new connection to the database
             // begin a transaction
             // and get the parametized insert command we can use
-            await OpenConnectionAsync();
+            OpenConnection();
             using var transaction = _connection.BeginTransaction();
             using var command = GetInsertCommand();
 
@@ -54,13 +55,13 @@ namespace ATG.Collector.Target.Database
                 {
                     command.Parameters.Clear();
                     AddCommandParameters(command, row, data);
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
                 }
 
                 // if here, then no errors and we can commit the transaction
                 transaction.Commit();
             }
-            catch (Exception ex)
+            catch (DbException ex)
             {
                 // something didn't work out, roll things back
                 transaction.Rollback();
@@ -70,7 +71,7 @@ namespace ATG.Collector.Target.Database
                     $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}StoreAsync{Symbols.TABSYMBOL}Exception Thrown:"
                 );
                 Console.WriteLine("----------");
-                Console.WriteLine(ex.InnerException);
+                Console.WriteLine(ex.ToString());
                 Console.WriteLine("----------");
 
                 // return an error object

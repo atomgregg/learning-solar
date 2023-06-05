@@ -5,8 +5,8 @@ namespace ATG.Collector.Types.Interfaces
 {
     public interface IGeneralStore
     {
-        Task OpenConnectionAsync();
-        Task CloseConnectionAsync();
-        Task<StoreResult> StoreAsync(CollectResult data);
+        void OpenConnection();
+        void CloseConnection();
+        StoreResult Store(CollectResult data);
     }
 }
