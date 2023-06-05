@@ -3,6 +3,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ATG.Collector.Types;
+using ATG.Collector.Types.Collect;
+using ATG.Collector.Types.Interfaces;
+using ATG.Collector.Types.Shared;
 using HtmlAgilityPack;
 
 namespace ATG.Collector.Source.Solar
@@ -10,14 +13,13 @@ namespace ATG.Collector.Source.Solar
     public class KostalSource : ISolarSource
     {
         private const string PROGRAM_NAME = "ATG.Collector.Source.Solar.KostalSource";
-        private const string TABSYMBOL = "\t";
         private CollectParameter _args;
         private HttpClient _client;
 
         public KostalSource(CollectParameter args)
         {
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}Constructor{TABSYMBOL}Start"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}Constructor{Symbols.TABSYMBOL}Start"
             );
 
             // store the arguments
@@ -32,14 +34,14 @@ namespace ATG.Collector.Source.Solar
             _client.Timeout = TimeSpan.FromSeconds(5);
 
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}Constructor{TABSYMBOL}End"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}Constructor{Symbols.TABSYMBOL}End"
             );
         }
 
         public async Task<CollectResult> CollectAsync()
         {
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}Start"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}CollectAsync{Symbols.TABSYMBOL}Start"
             );
 
             // need this for later
@@ -52,7 +54,7 @@ namespace ATG.Collector.Source.Solar
             }
 
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}Arguments valid"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}CollectAsync{Symbols.TABSYMBOL}Arguments valid"
             );
 
             // download and parse the webpage
@@ -65,7 +67,7 @@ namespace ATG.Collector.Source.Solar
             catch (System.AggregateException ex)
             {
                 Console.WriteLine(
-                    $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}Exception Thrown:"
+                    $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}CollectAsync{Symbols.TABSYMBOL}Exception Thrown:"
                 );
                 Console.WriteLine("----------");
                 Console.WriteLine(ex.Flatten().InnerException);
@@ -78,13 +80,13 @@ namespace ATG.Collector.Source.Solar
             }
 
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}HTML response received"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}CollectAsync{Symbols.TABSYMBOL}HTML response received"
             );
 
             var html = await response.Content.ReadAsStringAsync();
             var results = ParsePowerGeneration(html, invokeTstamp);
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}HTML response parsed"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}CollectAsync{Symbols.TABSYMBOL}HTML response parsed"
             );
 
             // update the return object to include the starting tstamp and the execution time
@@ -93,7 +95,7 @@ namespace ATG.Collector.Source.Solar
                 DateTime.UtcNow.Subtract(invokeTstamp).TotalMilliseconds;
 
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}CollectAsync{TABSYMBOL}End"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}CollectAsync{Symbols.TABSYMBOL}End"
             );
 
             return results;
@@ -102,7 +104,7 @@ namespace ATG.Collector.Source.Solar
         private CollectResult ParsePowerGeneration(string html, DateTime invokeTstamp)
         {
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}ParsePowerGeneration{TABSYMBOL}Start"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}ParsePowerGeneration{Symbols.TABSYMBOL}Start"
             );
 
             var results = new CollectResult();
@@ -154,7 +156,7 @@ namespace ATG.Collector.Source.Solar
             }
 
             Console.WriteLine(
-                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{TABSYMBOL}{PROGRAM_NAME}{TABSYMBOL}ParsePowerGeneration{TABSYMBOL}End"
+                $"{DateTime.UtcNow.ToString("yyyy.MM.dd HH:MM:ss")}{Symbols.TABSYMBOL}{PROGRAM_NAME}{Symbols.TABSYMBOL}ParsePowerGeneration{Symbols.TABSYMBOL}End"
             );
             return results;
         }

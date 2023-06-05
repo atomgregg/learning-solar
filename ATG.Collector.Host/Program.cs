@@ -1,6 +1,8 @@
 ﻿using System;
 using ATG.Collector.Source.Solar;
+using ATG.Collector.Target.Database;
 using ATG.Collector.Types;
+using ATG.Collector.Types.Interfaces;
 using CommandLine;
 
 namespace ATG.Collector.Host
@@ -13,36 +15,56 @@ namespace ATG.Collector.Host
             GenData
         }
 
+        public enum StoreModeEnum
+        {
+            Postgresql
+        }
+
         public class Options
         {
             [Option(
                 "collect-mode",
                 Required = false,
                 Default = CollectModeEnum.Normal,
-                HelpText = "Set a mode to indicate a test execution of the application."
+                HelpText = "Set a mode to indicate how to collect the data (from an inverter or data generation)."
             )]
             public CollectModeEnum CollectMode { get; set; }
 
             [Option(
-                "endpoint",
+                "store-mode",
+                Required = false,
+                Default = StoreModeEnum.Postgresql,
+                HelpText = "Set a mode to indicate where to store the data."
+            )]
+            public StoreModeEnum StoreMode { get; set; }
+
+            [Option(
+                "inverter-endpoint",
                 Required = false,
                 HelpText = "Sets the endpoint where the inverter web server can be reached."
             )]
-            public string Endpoint { get; set; } = string.Empty;
+            public string InverterEndpoint { get; set; } = string.Empty;
 
             [Option(
-                "username",
+                "inverter-username",
                 Required = false,
                 HelpText = "Sets the username to use to authenticate (basic auth) with the inverter web server."
             )]
-            public string Username { get; set; } = string.Empty;
+            public string InverterUsername { get; set; } = string.Empty;
 
             [Option(
-                "password",
+                "inverter-password",
                 Required = false,
                 HelpText = "Sets the password to use to authenticate (basic auth) with the inverter web server."
             )]
-            public string Password { get; set; } = string.Empty;
+            public string InverterPassword { get; set; } = string.Empty;
+
+            [Option(
+                "store-connection",
+                Required = false,
+                HelpText = "Sets the connection string where for the target store."
+            )]
+            public string StoreConnectionString { get; set; } = string.Empty;
         }
 
         static void Main(string[] args)
@@ -61,6 +83,12 @@ namespace ATG.Collector.Host
                     // do the collection and print to console
                     var results = await collector.CollectAsync();
                     Console.WriteLine(results?.ToJsonString());
+
+                    // write to the postgresql store
+                    var store = ResolveStore(o);
+                    await store.OpenConnectionAsync();
+                    await store.StoreAsync(results);
+                    await store.CloseConnectionAsync();
                 });
         }
 
@@ -72,12 +100,17 @@ namespace ATG.Collector.Host
                 ? new KostalSource(
                     new CollectParameter
                     {
-                        Endpoint = o.Endpoint,
-                        Username = o.Username,
-                        Password = o.Password
+                        Endpoint = o.InverterEndpoint,
+                        Username = o.InverterUsername,
+                        Password = o.InverterPassword
                     }
                 )
                 : new SolarGenerator();
+        }
+
+        static IGeneralStore ResolveStore(Options o)
+        {
+            return new PostgreSQLTarget(o.StoreConnectionString);
         }
 
         static bool IsValid(Options o)
@@ -88,9 +121,9 @@ namespace ATG.Collector.Host
 
             // check the endpoint, username and password have been provided
             if (
-                string.IsNullOrEmpty(o.Endpoint)
-                || string.IsNullOrEmpty(o.Username)
-                || string.IsNullOrEmpty(o.Password)
+                string.IsNullOrEmpty(o.InverterEndpoint)
+                || string.IsNullOrEmpty(o.InverterUsername)
+                || string.IsNullOrEmpty(o.InverterPassword)
             )
             {
                 Console.WriteLine(

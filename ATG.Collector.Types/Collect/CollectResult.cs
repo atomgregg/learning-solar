@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace ATG.Collector.Types
+namespace ATG.Collector.Types.Collect
 {
     public class CollectResult
     {

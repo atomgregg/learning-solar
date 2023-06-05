@@ -12,6 +12,17 @@ namespace ATG.Collector.Types
         public bool StoreSuccessful { get; set; }
         public List<StoreError> Errors { get; set; } = new List<StoreError>();
 
+        public static StoreResult NewWithSingleError(string error, string srcError)
+        {
+            return new StoreResult
+            {
+                Errors = new List<StoreError>
+                {
+                    new StoreError { ErrorMessage = error, SourceErrorMessage = srcError }
+                }
+            };
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

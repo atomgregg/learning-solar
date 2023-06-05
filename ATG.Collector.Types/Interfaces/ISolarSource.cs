@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using ATG.Collector.Types.Collect;
 
-namespace ATG.Collector.Types
+namespace ATG.Collector.Types.Interfaces
 {
     public interface ISolarSource
     {

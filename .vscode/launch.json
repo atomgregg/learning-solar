@@ -1,13 +1,14 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/ATG.Collector.Host/bin/Debug/net7.0/ATG.Collector.Host.dll",
-            "args": [],
+            "args": ["--collect-mode", "GenData", "--store-mode", "Postgresql", "--store-connection", "Host=localhost;Port=5432;Database=atg;Username=postgres;Password=password"],
             "cwd": "${workspaceFolder}/ATG.Collector.Host",
             "console": "internalConsole",
             "stopAtEntry": false
@@ -18,7 +19,7 @@
             "request": "attach"
         },
         {
-            "name": "Docker .NET Launch",
+            "name": "Utils: Docker .NET Launch",
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",

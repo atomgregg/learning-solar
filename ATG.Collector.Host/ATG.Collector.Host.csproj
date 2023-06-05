@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ATG.Collector.Types\ATG.Collector.Types.csproj" />
     <ProjectReference Include="..\ATG.Collector.Source\ATG.Collector.Source.csproj" />
+    <ProjectReference Include="..\ATG.Collector.Target\ATG.Collector.Target.csproj" />
   </ItemGroup>
 
   <ItemGroup>

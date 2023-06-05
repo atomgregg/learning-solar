@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ATG.Collector.Types\ATG.Collector.Types.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="7.0.4" />
+  </ItemGroup>
+
 </Project>
