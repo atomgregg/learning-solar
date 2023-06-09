@@ -1,9 +1,9 @@
 <template>
   <div class="button-container">
-    <button :class="{ active: selectedOption === 'today' }" @click="getData('today')">Today</button>
-    <button :class="{ active: selectedOption === 'yesterday' }" @click="getData('yesterday')">Yesterday</button>
-    <button :class="{ active: selectedOption === 'recent' }" @click="getData('recent')">Recent</button>
-    <button :class="{ active: selectedOption === 'trend' }" @click="getData('trend')">Trend</button>
+    <button :class="{'active': selectedOption === 'today'}" @click="getData('today')">Today</button>
+    <button :class="{'active': selectedOption === 'yesterday'}" @click="getData('yesterday')">Yesterday</button>
+    <button :class="{'active': selectedOption === 'recent'}" @click="getData('recent')">Recent</button>
+    <button :class="{'active': selectedOption === 'trend'}" @click="getData('trend')">Trend</button>
   </div>
 
   <div>
@@ -41,6 +41,7 @@ export default {
     const colors = ['#007bff', '#28a745', '#ffc107', '#dc3545'];
 
     const getData = async (option) => {
+      selectedOption.value = option;
       try {
         const response = await axios.get(`https://localhost:7251/api/data/${option}`);
         const data = response.data;
@@ -96,7 +97,7 @@ export default {
 </script>
 
 <style>
-.active {
+.button-container button.active {
   background-color: #007bff;
   color: #fff;
 }
