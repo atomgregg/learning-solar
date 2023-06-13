@@ -36,6 +36,26 @@ export default {
     const chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: {
+            boxWidth: 12,
+            boxHeight: 2,
+            padding: 10,
+            font: {
+              size: 12,
+              weight: 'bold'
+            }
+          }
+        }
+      },
+      elements: {
+        point: {
+          radius: 0, // Set the radius to 0 to hide the dots
+        },
+      },
     };
     const selectedOption = ref('yesterday');
     const colors = ['#007bff', '#28a745', '#ffc107', '#dc3545'];

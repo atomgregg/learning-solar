@@ -1,4 +1,15 @@
-import { createApp } from 'vue';
-import App from './App.vue';
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.css'
 
-createApp(App).mount('#app');
+Vue.use(Vuetify);
+
+const vuetify = new Vuetify({
+    theme: {
+        // Customize your theme here
+    }
+});
+
+new Vue({
+    // ...
+  }).$mount('#app');

@@ -8,12 +8,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // allow the vue application to access the API
+var allowedSpecificOrigins = "_allowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader();
-    });
+    options.AddPolicy(
+        name: allowedSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+        }
+    );
 });
 
 var app = builder.Build();
@@ -25,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.UseCors(allowedSpecificOrigins);
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
