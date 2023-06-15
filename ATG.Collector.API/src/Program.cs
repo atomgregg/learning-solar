@@ -6,6 +6,7 @@ builder.Services.AddControllers();
 // add Swagger/OpenAPI (ref: https://aka.ms/aspnetcore/swashbuckle)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
 
 // allow the vue application to access the API
 var allowedSpecificOrigins = "_allowSpecificOrigins";

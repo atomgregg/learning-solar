@@ -63,7 +63,7 @@
       const getData = async (option) => {
         selectedOption.value = option;
         try {
-          const response = await axios.get(`https://localhost:7251/api/data/${option}`);
+          const response = await axios.get(`http://pi01.fritz.box:5000/api/data/${option}`);
           const data = response.data;
   
           const labels = [...new Set(data.map((item) => item.tstamp))];

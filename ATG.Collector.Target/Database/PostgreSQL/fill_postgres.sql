@@ -21,6 +21,6 @@ FROM (
     SELECT
         gen_random_uuid()::text AS key,
         ts
-    FROM generate_series('2022-06-08 00:00:00'::timestamp, '2023-06-08 23:59:00'::timestamp, '1 minute') AS ts
+    FROM generate_series('2022-06-15 00:00:00'::timestamp, '2023-06-15 23:59:00'::timestamp, '1 minute') AS ts
 ) AS ts
 CROSS JOIN unnest(ARRAY['String1', 'String2', 'String3']) AS rk;
