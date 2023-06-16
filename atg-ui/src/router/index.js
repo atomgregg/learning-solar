@@ -12,14 +12,30 @@ const routes = [
         component: () => import('@/views/Home.vue'),
       },
       {
-        path: 'kostal-inverter',
-        name: 'KostalInverter',
-        component: () => import('@/views/KostalInverter.vue'),
+        path: '/projects',
+        component: () => import('@/views/Projects.vue'),
+        children: [
+          {
+            path: '/projects',
+            name: 'ProjectList',
+            component: () => import('@/views/projects/ProjectList.vue'),
+          },{
+            path: '/projects/homesolarmonitoring',
+            name: 'ProjectHomeSolarMonitoring',
+            component: () => import('@/views/projects/HomeSolarMonitoring.vue'),
+          },
+        ]
       },
       {
-        path: 'contact',
-        name: 'Contact',
-        component: () => import('@/views/Contact.vue'),
+        path: '/blogs',
+        component: () => import('@/views/Blogs.vue'),
+        children: [
+          {
+            path: '/blogs',
+            name: 'BlogList',
+            component: () => import('@/views/blogs/BlogList.vue'),
+          },
+        ]
       },
     ],
   },
