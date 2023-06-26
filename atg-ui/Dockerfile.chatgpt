@@ -1,0 +1,27 @@
+# build stage
+FROM --platform=linux/arm64/v8 node:latest AS build
+WORKDIR /app
+
+# prepare the build environment
+COPY package.json ./
+RUN npm install
+
+# now we can copy everything over and build
+COPY . .
+RUN npm run build
+
+# production stage
+FROM --platform=linux/arm64/v8 nginx:latest as prod
+EXPOSE 80
+
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
+
+# Remove default nginx static assets
+RUN rm -rf ./*
+
+# Copy static assets from builder stage
+COPY --from=build /app/dist .
+
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

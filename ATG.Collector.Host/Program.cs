@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ATG.Collector.Source.Solar;
 using ATG.Collector.Target.Database;
 using ATG.Collector.Types;
@@ -71,42 +72,47 @@ namespace ATG.Collector.Host
         {
             Parser.Default
                 .ParseArguments<Options>(args)
-                .WithParsed<Options>(async o =>
+                .WithParsed<Options>(o =>
                 {
-                    try
-                    {
-                        // validate the arguments provided
-                        if (!IsValid(o))
-                            return;
-
-                        // create a collector for the given arguments
-                        ISolarSource collector = ResolveCollector(o);
-
-                        // do the collection and print to console
-                        var collectResult = await collector.CollectAsync();
-                        Console.WriteLine("===== Inverter Data =====");
-                        Console.WriteLine(collectResult?.ToJsonString());
-                        Console.WriteLine();
-                        Console.WriteLine();
-
-                        // write to the postgresql store
-                        IGeneralStore store = ResolveStore(o);
-                        store.OpenConnection();
-                        var storeResult = store.Store(collectResult);
-                        store.CloseConnection();
-                        Console.WriteLine("===== Store Results =====");
-                        Console.WriteLine(storeResult?.ToJsonString());
-                        Console.WriteLine();
-                        Console.WriteLine();
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Console.WriteLine("---------- ERROR ----------");
-                        Console.WriteLine(ex.ToString());
-                        Console.WriteLine("---------- ERROR ----------");
-                        throw;
-                    }
+                    DoWork(o).Wait();
                 });
+        }
+
+        static async Task DoWork(Options o)
+        {
+            try
+            {
+                // validate the arguments provided
+                if (!IsValid(o))
+                    return;
+
+                // create a collector for the given arguments
+                ISolarSource collector = ResolveCollector(o);
+
+                // do the collection and print to console
+                var collectResult = await collector.CollectAsync();
+                Console.WriteLine("===== Inverter Data =====");
+                Console.WriteLine(collectResult?.ToJsonString());
+                Console.WriteLine();
+                Console.WriteLine();
+
+                // write to the postgresql store
+                IGeneralStore store = ResolveStore(o);
+                store.OpenConnection();
+                var storeResult = store.Store(collectResult);
+                store.CloseConnection();
+                Console.WriteLine("===== Store Results =====");
+                Console.WriteLine(storeResult?.ToJsonString());
+                Console.WriteLine();
+                Console.WriteLine();
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine("---------- ERROR ----------");
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine("---------- ERROR ----------");
+                throw;
+            }
         }
 
         static ISolarSource ResolveCollector(Options o)

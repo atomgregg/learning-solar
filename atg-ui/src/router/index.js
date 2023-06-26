@@ -34,6 +34,10 @@ const routes = [
             path: '/blogs',
             name: 'BlogList',
             component: () => import('@/views/blogs/BlogList.vue'),
+          },{
+            path: '/blogs/comingsoon',
+            name: 'ComingSoon',
+            component: () => import('@/views/blogs/ComingSoon.vue'),
           },
         ]
       },

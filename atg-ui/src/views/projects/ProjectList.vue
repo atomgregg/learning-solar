@@ -1,30 +1,48 @@
 <template>
-    <v-responsive class="align-center text-left fill-height">
-        <v-row no-gutters>
-          <v-col>
-            <v-sheet class="pa-2 ma-2">
-                <v-card class="mx-auto" max-width="400">
-                    <v-img class="align-end text-white" src="@/assets/projects/homesolarmonitoring.jpg" cover>
-                        <v-card-title>Home Solar Monitoring</v-card-title>
-                    </v-img>
+  <v-responsive>
+    <v-row no-gutters justify="center" class="mb-6">
+      <v-col cols="8" offset="2">
+        <v-responsive>
+          <v-row no-gutters justify="center" class="mb-6">
+            <v-col cols="4">
+              <v-card width="300" class="ma-4">
+                <v-img
+                  height="200"
+                  src="@/assets/projects/homesolarmonitoring.jpg"
+                  cover
+                  class="text-white"
+                >
+                  <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
+                    <v-toolbar-title class="text-h6">
+                      Home Solar Monitoring
+                    </v-toolbar-title>
+                  </v-toolbar>
+                </v-img>
 
-                    <v-card-text>
-                      <div class="pt-4">Solar power generation collection, storage and visualization using a Raspberry Pi.</div>
-                      <div class="pt-4">Tech stack: dotnet, docker, vuejs, postgresql</div>
-                    </v-card-text>
+                <v-card-subtitle class="pt-4">
+                  #dotnet, #docker, #vuejs, #postgresql, #openssl
+                </v-card-subtitle>
 
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn to="/projects/homesolarmonitoring">View</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-sheet>
-          </v-col>
-          <v-col>
-            
-          </v-col>
-        </v-row>
-      </v-responsive>
+                <v-card-text>
+                  <p>
+                    Solar power generation collection, storage and visualization
+                    using a Raspberry Pi.
+                  </p>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn to="/projects/homesolarmonitoring">View</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+            <v-col cols="4"> </v-col>
+            <v-col cols="4"> </v-col>
+          </v-row>
+        </v-responsive>
+      </v-col>
+    </v-row>
+  </v-responsive>
 </template>
 
 <script setup>

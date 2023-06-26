@@ -1,57 +1,34 @@
-# base
+# Documentation for a VueJS Web Application
 
-## Project setup
+## Purpose
 
-```
-# yarn
-yarn
+This web application enables me to create an online presense, similar to a resume.
+This resume, includes details about my experience, how to contact me, and some projects/blog posts show-casing some experiments or projects.
+The website is run within a docker container, and is secured via SSL termination with certificates generated with CertBot/LetsEncrypt.
 
-# npm
-npm install
+## Contents
 
-# pnpm
-pnpm install
-```
+- [Building](#instructions-for-building)
+- [Running](#instructions-for-running)
 
-### Compiles and hot-reloads for development
+## Instructions for building
 
-```
-# yarn
-yarn dev
-
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
+```bash
+docker build -t atomgregg/atg-ui:v0.1 .
+docker push atomgregg/atg-ui:v0.1
 ```
 
-### Compiles and minifies for production
+## Instructions for running
 
-```
-# yarn
-yarn build
+```bash
+# get the latest image
+docker pull atomgregg/atg-ui:v0.1
 
-# npm
-npm run build
+# stop any existing container
+docker container stop atg-ui
 
-# pnpm
-pnpm build
-```
+# start the new one
+docker run -p 80:80 -p 443:443 -v /home/piadmin/atg-ui/certbot/www:/var/www/certbot -v /home/piadmin/atg-ui/certbot/conf:/etc/letsencrypt --name atg-ui -d --rm atomgregg/atg-ui:v0.1
 
-### Lints and fixes files
-
-```
-# yarn
-yarn lint
-
-# npm
-npm run lint
-
-# pnpm
-pnpm lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://vitejs.dev/config/).
+# connect to the network
+docker network connect atg-network atg-ui

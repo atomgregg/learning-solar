@@ -175,8 +175,14 @@ namespace ATG.Collector.API.Controllers
             AggregateToEnum aggregate = AggregateToEnum.None
         )
         {
+            // try to get a cached copy of the data
+            // exception: no caching for today's data
             var cacheKey = $"{from.ToFileTimeUtc()}_{to.ToFileTimeUtc()}_{(int)aggregate}";
-            if (_cache.TryGetValue(cacheKey, out List<DataRaw> data) && data != null)
+            if (
+                from.Date != DateTime.Today
+                && _cache.TryGetValue(cacheKey, out List<DataRaw> data)
+                && data != null
+            )
             {
                 return data;
             }

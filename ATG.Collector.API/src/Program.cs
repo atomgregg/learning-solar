@@ -16,7 +16,15 @@ builder.Services.AddCors(options =>
         name: allowedSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+            policy
+                .WithOrigins(
+                    "http://localhost:3000",
+                    "http://pi01.fritz.box:81",
+                    "http://atomgregg.v6.rocks",
+                    "https://atomgregg.v6.rocks"
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         }
     );
 });

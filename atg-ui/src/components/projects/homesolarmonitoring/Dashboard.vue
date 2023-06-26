@@ -1,9 +1,32 @@
 <template>
+  <v-alert
+    density="compact"
+    type="warning"
+    title="Mock Data"
+    text="The current database has been populated with mock data! In the near future I will schedule the execution of the collector, and run an import of the historical data logs to display real data."
+  ></v-alert>
+
   <div class="button-container">
-    <v-btn :class="{'active': selectedOption === 'today'}" @click="getData('today')">Today</v-btn>
-    <v-btn :class="{'active': selectedOption === 'yesterday'}" @click="getData('yesterday')">Yesterday</v-btn>
-    <v-btn :class="{'active': selectedOption === 'recent'}" @click="getData('recent')">Recent</v-btn>
-    <v-btn :class="{'active': selectedOption === 'trend'}" @click="getData('trend')">Trend</v-btn>
+    <v-btn
+      :class="{ active: selectedOption === 'today' }"
+      @click="getData('today')"
+      >Today</v-btn
+    >
+    <v-btn
+      :class="{ active: selectedOption === 'yesterday' }"
+      @click="getData('yesterday')"
+      >Yesterday</v-btn
+    >
+    <v-btn
+      :class="{ active: selectedOption === 'recent' }"
+      @click="getData('recent')"
+      >Recent</v-btn
+    >
+    <v-btn
+      :class="{ active: selectedOption === 'trend' }"
+      @click="getData('trend')"
+      >Trend</v-btn
+    >
   </div>
 
   <div>
@@ -12,21 +35,40 @@
       :options="chartOptions"
       :data="chartData"
       :width="400"
-      :height="800"
+      :height="600"
     />
   </div>
 </template>
 
 <script>
-import { Line } from 'vue-chartjs';
-import { ref, onMounted } from 'vue';
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
-import axios from 'axios';
+import { Line } from "vue-chartjs";
+import { ref, onMounted } from "vue";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+} from "chart.js";
+import axios from "axios";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement
+);
 
 export default {
-  name: 'BasicChart',
+  name: "BasicChart",
   components: {
     Line,
   },
@@ -38,18 +80,18 @@ export default {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'top',
-          align: 'end',
+          position: "top",
+          align: "end",
           labels: {
             boxWidth: 12,
             boxHeight: 2,
             padding: 10,
             font: {
               size: 12,
-              weight: 'bold'
-            }
-          }
-        }
+              weight: "bold",
+            },
+          },
+        },
       },
       elements: {
         point: {
@@ -57,13 +99,15 @@ export default {
         },
       },
     };
-    const selectedOption = ref('yesterday');
-    const colors = ['#007bff', '#28a745', '#ffc107', '#dc3545'];
+    const selectedOption = ref("yesterday");
+    const colors = ["#007bff", "#28a745", "#ffc107", "#dc3545"];
 
     const getData = async (option) => {
       selectedOption.value = option;
       try {
-        const response = await axios.get(`http://pi01.fritz.box:5000/api/data/${option}`);
+        const response = await axios.get(
+          `https://pi01.fritz.box:5001/api/data/${option}`
+        );
         const data = response.data;
 
         const labels = [...new Set(data.map((item) => item.tstamp))];
@@ -99,7 +143,7 @@ export default {
 
     onMounted(async () => {
       try {
-        await getData('yesterday');
+        await getData("yesterday");
       } catch (error) {
         console.error(error);
       }

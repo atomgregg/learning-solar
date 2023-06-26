@@ -22,12 +22,23 @@
         }
     },
         {
-            "name": "Collector Host: .NET Core Launch (console)",
+            "name": "Gen-Data // Collector Host: .NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/ATG.Collector.Host/bin/Debug/net7.0/ATG.Collector.Host.dll",
-            "args": ["--collect-mode", "GenData", "--store-mode", "Postgresql", "--store-connection", "Host=localhost;Port=5432;Database=atg;Username=postgres;Password=password"],
+            "args": ["--collect-mode", "Normal", "--store-mode", "Postgresql", "--store-connection", "Host=localhost;Port=5432;Database=atg;Username=postgres;Password=password"],
+            "cwd": "${workspaceFolder}/ATG.Collector.Host",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Real-Data // Collector Host: .NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/ATG.Collector.Host/bin/Debug/net7.0/ATG.Collector.Host.dll",
+            "args": ["--collect-mode", "Normal", "--inverter-endpoint", "http://192.168.178.150/", "--inverter-username", "pvserver", "--inverter-password", "pvwr", "--store-mode", "Postgresql", "--store-connection", "Host=localhost;Port=5432;Database=atg;Username=postgres;Password=password"],
             "cwd": "${workspaceFolder}/ATG.Collector.Host",
             "console": "internalConsole",
             "stopAtEntry": false
