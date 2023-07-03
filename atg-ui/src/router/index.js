@@ -39,6 +39,11 @@ const routes = [
             name: 'ComingSoon',
             component: () => import('@/views/blogs/ComingSoon.vue'),
           },
+          {
+            path: '/blogs/2023-06-30-career-pivot',
+            name: '2023-CareerPivot',
+            component: () => import('@/views/blogs/CareerPivot.vue'),
+          },
         ]
       },
     ],

@@ -25,7 +25,7 @@
       <h4 class="v-heading mb-2 text-h6">Motivation</h4>
 
       <p>
-        Whilst the last year's in my career have been immensely rewarding as a
+        Whilst the last years in my career have been immensely rewarding as a
         servant leader, strategist and innovator, I have chosen to re-steer my
         career and invest my time in creating software.
       </p>

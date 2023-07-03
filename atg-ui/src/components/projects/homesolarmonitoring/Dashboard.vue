@@ -1,43 +1,45 @@
 <template>
-  <v-alert
-    density="compact"
-    type="warning"
-    title="Mock Data"
-    text="The current database has been populated with mock data! In the near future I will schedule the execution of the collector, and run an import of the historical data logs to display real data."
-  ></v-alert>
+  <v-container class="pt-4">
+    <v-alert
+      density="compact"
+      type="warning"
+      title="Mock Data"
+      text="The current database has been populated with mock data! In the near future I will schedule the execution of the collector, and run an import of the historical data logs to display real data."
+    ></v-alert>
 
-  <div class="button-container">
-    <v-btn
-      :class="{ active: selectedOption === 'today' }"
-      @click="getData('today')"
-      >Today</v-btn
-    >
-    <v-btn
-      :class="{ active: selectedOption === 'yesterday' }"
-      @click="getData('yesterday')"
-      >Yesterday</v-btn
-    >
-    <v-btn
-      :class="{ active: selectedOption === 'recent' }"
-      @click="getData('recent')"
-      >Recent</v-btn
-    >
-    <v-btn
-      :class="{ active: selectedOption === 'trend' }"
-      @click="getData('trend')"
-      >Trend</v-btn
-    >
-  </div>
+    <div class="button-container">
+      <v-btn
+        :class="{ active: selectedOption === 'today' }"
+        @click="getData('today')"
+        >Today</v-btn
+      >
+      <v-btn
+        :class="{ active: selectedOption === 'yesterday' }"
+        @click="getData('yesterday')"
+        >Yesterday</v-btn
+      >
+      <v-btn
+        :class="{ active: selectedOption === 'recent' }"
+        @click="getData('recent')"
+        >Recent</v-btn
+      >
+      <v-btn
+        :class="{ active: selectedOption === 'trend' }"
+        @click="getData('trend')"
+        >Trend</v-btn
+      >
+    </div>
 
-  <div>
-    <Line
-      v-if="loaded"
-      :options="chartOptions"
-      :data="chartData"
-      :width="400"
-      :height="600"
-    />
-  </div>
+    <div>
+      <Line
+        v-if="loaded"
+        :options="chartOptions"
+        :data="chartData"
+        :width="400"
+        :height="600"
+      />
+    </div>
+  </v-container>
 </template>
 
 <script>
@@ -106,7 +108,7 @@ export default {
       selectedOption.value = option;
       try {
         const response = await axios.get(
-          `https://pi01.fritz.box:5001/api/data/${option}`
+          `https://atomgregg.v6.rocks/api/data/${option}`
         );
         const data = response.data;
 

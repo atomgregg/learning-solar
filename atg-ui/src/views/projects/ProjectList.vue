@@ -1,50 +1,21 @@
 <template>
-  <v-responsive>
-    <v-row no-gutters justify="center" class="mb-6">
-      <v-col cols="8" offset="2">
-        <v-responsive>
-          <v-row no-gutters justify="center" class="mb-6">
-            <v-col cols="4">
-              <v-card width="300" class="ma-4">
-                <v-img
-                  height="200"
-                  src="@/assets/projects/homesolarmonitoring.jpg"
-                  cover
-                  class="text-white"
-                >
-                  <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
-                    <v-toolbar-title class="text-h6">
-                      Home Solar Monitoring
-                    </v-toolbar-title>
-                  </v-toolbar>
-                </v-img>
-
-                <v-card-subtitle class="pt-4">
-                  #dotnet, #docker, #vuejs, #postgresql, #openssl
-                </v-card-subtitle>
-
-                <v-card-text>
-                  <p>
-                    Solar power generation collection, storage and visualization
-                    using a Raspberry Pi.
-                  </p>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn to="/projects/homesolarmonitoring">View</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-            <v-col cols="4"> </v-col>
-            <v-col cols="4"> </v-col>
-          </v-row>
-        </v-responsive>
-      </v-col>
+  <v-responsive v-if="mobile">
+    <v-row>
+      <v-col cols="12"><SolarMonitoring /></v-col>
+    </v-row>
+  </v-responsive>
+  <v-responsive v-else>
+    <v-row>
+      <v-col cols="4"><SolarMonitoring /></v-col>
+      <v-col cols="4"></v-col>
+      <v-col cols="4"></v-col>
     </v-row>
   </v-responsive>
 </template>
 
 <script setup>
-//
+import SolarMonitoring from "@/components/projects/homesolarmonitoring/ListItem.vue";
+
+import { useDisplay } from "vuetify";
+const { mobile } = useDisplay();
 </script>

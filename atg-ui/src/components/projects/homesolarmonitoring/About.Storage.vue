@@ -32,11 +32,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script>
-export default {
-  data: () => ({
-    show: false,
-  }),
-};
-</script>

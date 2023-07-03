@@ -8,8 +8,12 @@ The website is run within a docker container, and is secured via SSL termination
 
 ## Contents
 
-- [Building](#instructions-for-building)
-- [Running](#instructions-for-running)
+- [Documentation for a VueJS Web Application](#documentation-for-a-vuejs-web-application)
+  - [Purpose](#purpose)
+  - [Contents](#contents)
+  - [Instructions for building](#instructions-for-building)
+  - [Instructions for running](#instructions-for-running)
+  - [Instructions for debugging](#instructions-for-debugging)
 
 ## Instructions for building
 
@@ -32,3 +36,10 @@ docker run -p 80:80 -p 443:443 -v /home/piadmin/atg-ui/certbot/www:/var/www/cert
 
 # connect to the network
 docker network connect atg-network atg-ui
+```
+
+## Instructions for debugging
+
+```bash
+docker exec -i -t atg-ui /bin/bash
+```

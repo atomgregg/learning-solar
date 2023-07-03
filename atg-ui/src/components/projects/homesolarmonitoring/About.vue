@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="pa-2 ma-2">
+    <v-sheet class="pt-2 mt-2">
         <section id="about-the-project">
             <section id="background">
                 <h4 class="v-heading mb-2 text-h6">Background</h4>
@@ -21,7 +21,12 @@
                 The project components are all deployed to a Raspberry Pi Model 4, and run as Docker containers, and joined to a docker network. The following components are run as docker containers, and together form the basis of the solution.
                 </p>
 
-                <v-responsive>
+                <v-responsive v-if="mobile">
+                    <AboutDataCollection></AboutDataCollection>
+                    <AboutStorage></AboutStorage>
+                    <AboutDisplay></AboutDisplay>
+                </v-responsive>
+                <v-responsive v-else>
                     <v-row no-gutters justify="center" class="mb-6">
                         <v-col cols="4">
                             <AboutDataCollection></AboutDataCollection>
@@ -40,6 +45,9 @@
 </template>
 
 <script setup>
+import { useDisplay } from "vuetify";
+const { mobile } = useDisplay();
+
 import AboutDataCollection from "@/components/projects/homesolarmonitoring/About.DataCollection.vue";
 import AboutStorage from "@/components/projects/homesolarmonitoring/About.Storage.vue";
 import AboutDisplay from "@/components/projects/homesolarmonitoring/About.Display.vue";

@@ -1,10 +1,8 @@
 <template>
-  <v-card>
-    <v-layout>
-      <default-bar />
-      <default-view />
-    </v-layout>
-  </v-card>
+  <v-layout>
+    <default-bar />
+    <default-view />
+  </v-layout>
 </template>
 
 <script setup>
